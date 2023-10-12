@@ -1,21 +1,15 @@
 <script setup>
-import {ref, computed} from 'vue'
+import {computed} from 'vue'
 
-const props = defineProps(['name', 'price'])
+const props = defineProps(['groceries'])
 
-const quantity = ref([0, 0, 0, 0])
+let total = computed(()=>{
+    let total = 0
 
-const totals =  computed(()=>{
-    const list = []
-    for (let i = 0; i < props.name.length; i++) {
-        list[i] = (props.price[i] * quantity.value[i])
+    for(let i in props.groceries){
+        total += props.groceries[i].quantity * props.groceries[i].price
     }
-    return list
-})
-
-const sumTotal = computed(()=>{
-    const reducer = (accumulator, item) => {return accumulator + item}
-    return totals.value.reduce(reducer, 0).toFixed(2)
+    return total.toFixed(2)
 })
 
 </script>
@@ -28,15 +22,15 @@ const sumTotal = computed(()=>{
         <th>Aantal</th>
         <th>Subtotaal</th>
     </tr>
-    <tr v-for="i in name.length">
-        <td>{{ props.name[i-1] }}</td>
-        <td>{{ props.price[i-1].toFixed(2) }}</td>
-        <td><input type="number" class="productQuantity" v-model="quantity[i-1]"></td>
-        <td>{{ totals[i-1].toFixed(2) }}</td>
+    <tr v-for="i in props.groceries">
+        <td>{{ i.name}}</td>
+        <td>{{ i.price.toFixed(2) }}</td>
+        <td><input type="number" class="productQuantity" v-model="i.quantity"></td>
+        <td>{{ (i.price * i.quantity).toFixed(2) }}</td>
     </tr>
     <tr>
         <td colspan="3" id="total">Totaal</td>
-        <td>{{ sumTotal }}</td>
+        <td>{{ total }}</td>
     </tr>
 </table>
 
