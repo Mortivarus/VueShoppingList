@@ -4,12 +4,12 @@ import {computed} from 'vue'
 const props = defineProps(['groceries'])
 
 let total = computed(()=>{
-    let total = 0
+    let num = 0
 
     for(let i in props.groceries){
-        total += props.groceries[i].quantity * props.groceries[i].price
+        num += props.groceries[i].quantity * props.groceries[i].price
     }
-    return total.toFixed(2)
+    return num.toFixed(2)
 })
 
 </script>
